@@ -5,8 +5,24 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 1. What was broken when you started?
 
 - What did the game look like the first time you ran it?
+
 - List at least two concrete bugs you noticed at the start  
   (for example: "the secret number kept changing" or "the hints were backwards").
+  While the game UI looks user-friendly and easy to understand, when running it for the first time, it let me enter numbers that are out of the specified range and did not dispaly any error message. Some of the bugs that I found and the what should happen are list below.
+
+  - bug: "Attempts allowed" The sidebar is one point higher than "Attempts left" in the main area.
+  - requirement. The sidebar and main window should display the same number of attempts at all levels of diffukty
+
+  - bug: The "New Game" does not reset the window to paly a new game
+  - requirement: The "New Game" button should reset all the variables in the game. It should reset the state of the game.
+
+  - when changing the level of difficulty, the range is not setting correctly in the main window
+  - requirement: The main window should display the correct information based on level of difficulty
+
+  - Hints does not help the user to get closer to secret number to win the game. Hints mislead the user
+  - requirement: Hints are supposed to help the user to get closer the required target
+
+
 
 ---
 
