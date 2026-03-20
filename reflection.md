@@ -54,10 +54,20 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
+  First I,manually, checked the output of the functions that I debugged
+  Then, I decided to generate test cases for the two bugs that I fixed
+  finally, I ran pytest to run these test cases with the command `python -m pytest tests/test_game_logic.py`
+  I found that the existing test cases had errors becasue they compare the output to string of the check_guess function to string. However, the return value of this function is a tuple
+  Thefore, I commented thees exsiting test cases and utilize AI generated ones.
+  
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
+  Value of the secret was a sting and the value of the guess was an integer. As we need integer comparison , the value of the secret was converted to an integer. The output string used in the tuples was also corrected. 
+  These chanegs were tested with newly generated test cases:  def test_winning_guess(),test_guess_too_high(),test_guess_too_low():  
+    
 - Did AI help you design or understand any tests? How?
-
+  I used AI to generate test cases. I had no prior knowledge using pytest. So,I use AI to learn about it and to run the test commands.
+  When I first execute the test files, It produce errors becasue the exsiting test cases was comparing tuples and string. AI help me understand these errors in the existng test code
 ---
 
 ## 4. What did you learn about Streamlit and state?
