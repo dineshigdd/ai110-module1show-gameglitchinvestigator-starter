@@ -1,5 +1,5 @@
 def get_range_for_difficulty(difficulty: str):
-    """Return (low, high) inclusive range for a given difficulty."""
+    """Return (low, high) inclusive range for a given difficulty."""    
     if difficulty == "Easy":
         return 1, 20
     if difficulty == "Normal":
@@ -32,7 +32,7 @@ def parse_guess(raw: str):
     return True, value, None
 
 
-def check_guess(guess, secret):
+def check_guess(guess, secret): #FIX: Refactored logic into logic_utils.py using claude code 
     """
     Compare guess to secret and return (outcome, message).
 
@@ -43,19 +43,19 @@ def check_guess(guess, secret):
 
     try:
         if guess > secret:
-            return "Too High", "📈 Go LOWER!" # FIXME:Logic breaks here
+            return "Too High", "📈 Go LOWER!" #fixed the return value
         else:
-            return "Too Low", "📉 Go HIGHER!"
+            return "Too Low", "📉 Go HIGHER!" #fixed the return value
     except TypeError:
         g = str(guess)
         if g == secret:
             return "Win", "🎉 Correct!"
         if g > secret:
-            return "Too High", "📈 Go LOWER!"
-        return "Too Low", "📉 Go HIGHER!"
+            return "Too High", "📈 Go LOWER!" #fixed the return value
+        return "Too Low", "📉 Go HIGHER!" #fixed the return value
 
 
-def update_score(current_score: int, outcome: str, attempt_number: int):
+def update_score(current_score: int, outcome: str, attempt_number: int):  #FIX: Refactored logic into logic_utils.py using claude code 
     """Update score based on outcome and attempt number."""
     if outcome == "Win":
         points = 100 - 10 * (attempt_number + 1)

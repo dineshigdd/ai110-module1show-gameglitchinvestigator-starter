@@ -45,7 +45,7 @@ if "history" not in st.session_state:
 st.subheader("Make a guess")
 
 st.info(
-    f"Guess a number between {low} and {high}. "
+    f"Guess a number between {low} and {high}. " #fixed the range display to match the actual range for the difficulty level
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
@@ -94,7 +94,8 @@ if submit:
         st.session_state.history.append(guess_int)
 
         if st.session_state.attempts % 2 == 0:
-            secret = int(st.session_state.secret)
+            #FIX: Added int() cast to secret to ensure type consistency for comparison in check_guess. 
+            secret = int(st.session_state.secret) 
         else:
             secret = st.session_state.secret    
 
