@@ -5,26 +5,29 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 1. What was broken when you started?
 
 - What did the game look like the first time you ran it?
-
 - List at least two concrete bugs you noticed at the start  
   (for example: "the secret number kept changing" or "the hints were backwards").
   
-  While the game UI looks user-friendly and easy to understand, when running it for the first time, it let me enter numbers that are out of the specified range and did not dispaly any error message. Some of the bugs that I found and the what should happen are list below.
+  While the game UI looks user-friendly and easy to understand, during the first run, it allowed me to enter numbers outside the specified range without displaying an error message. Below are the bugs I found and the corresponding requirements:
 
-   -When changing the level of difficulty, the range is not setting correctly in the main window, and the secret is not changing within the the range of integers specified in the difficulty level
-  - requirement: The main window should display the correct information based on level of difficulty,and the secret should be within the the range of integers specified in the difficulty level
+  1. Bug: When changing the difficulty level, the range in the main window does not update correctly, and the secret number does not stay within the range specified by the difficulty level.
 
-   - Hints does not help the user to get closer to secret number to win the game. Hints mislead the user
-  - requirement: Hints are supposed to help the user to get closer the required target
+  **Requirement:** The main window should display correct information based on the difficulty level, and the secret must be within the specified integer range.
 
-  - bug: The "New Game" does not reset the window to paly a new game
-  - requirement: The "New Game" button should reset all the variables in the game. It should reset the state of the game.
+  2. Bug: Hints do not help the user get closer to the secret number; instead, they are misleading.
 
-  - bug: "Attempts allowed" The sidebar is one point higher than "Attempts left" in the main area.
-  - requirement. The sidebar and main window should display the same number of attempts at all levels of diffukty
+  **Requirement:** Hints must assist the user in narrowing down the target number.
 
- - bug: Number of attempts are not deacreaing at every attempt
- - requirements: Number of attempts should be decreasing at every attempt
+  3. Bug: The 'New Game' button does not reset the window to play a new game.
+
+  **Requirement:** The 'New Game' button should reset all game variables and the game state.
+
+  4. Bug: The 'Attempts allowed' in the sidebar is one point higher than the 'Attempts left' in the main area.
+
+  **Requirement:** The sidebar and main window should display the same number of attempts across all difficulty levels.
+
+  5. Bug: The number of attempts does not decrease with every guess.
+  **Requirement:** The number of attempts should decrease by one after each guess.
 ---
 
 ## 2. How did you use AI as a teammate?
@@ -44,29 +47,25 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
   The string "1 and 100" is hardcoded. It never uses the low and high variables that were already computed just above it at app.py:87:
   low, high = get_range_for_difficulty(difficulty)
 
-  How I verified:  You can easily verify this. When the user change the level of difficuly , the main window does not show the correct range of numbers for the user to enter.
+  How I verified: This can be easily verified: when the user changes the difficulty level, the main window fails to update and show the correct range of numbers for the user to enter.
+
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
-  There is this AI suggesstion"Bug: **Hard's range (1–50) is smaller than Normal's (1–100), yet Hard gets fewer attempts (5 vs 8).** That's actually harder. But the hint UI always says "Guess between 1 and 100" regardless of difficulty (line 110)."
-  While AI is correctly distinguish harder range and Nomral range, However, AI suggest that Harder range should have more attempts than normal range. While I do not have access to specific user requirements of this app, I assumed that having fewer range for the level 'Hard' than that of the 'Normal' range is by design by the development team.
+  There is a AI suggestion  : "Bug: **Hard's range (1–50) is smaller than Normal's (1–100), yet Hard gets fewer attempts (5 vs 8).** That's actually harder. But the hint UI always says "Guess between 1 and 100" regardless of difficulty (line 110)."
+
+  The AI correctly distinguishes between the 'Hard' and 'Normal' ranges; however, it suggests that the 'Hard' level should have more attempts than the 'Normal' level. While I do not have access to the specific user requirements for this app, I am assuming that a smaller range for the 'Hard' level compared to the 'Normal' level is an intentional design choice by the development team."
 ---
 
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
-      First I,manually, checked the output of the functions that I debugged
-  Then, I decided to generate test cases for the two bugs that I fixed
-  finally, I ran pytest to run these test cases with the command `python -m pytest tests/test_game_logic.py`.
-  I found that the existing test cases had errors becasue they compare the output to string of the check_guess function to string. However, the return value of this function is a tuple
-  Thefore, I commented these exsiting test cases and utilize AI generated ones.
+  First, I manually checked the output of the functions I debugged. Then, I decided to generate test cases for the two bugs I fixed. Finally, I ran pytest using the command `python -m pytest tests/test_game_logic.py`. I discovered that the existing test cases contained errors because they were comparing the output of the check_guess function to a string, even though the function returns a tuple. Therefore, I commented out the existing test cases and utilized AI-generated ones instead.
   
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
-  Value of the secret had a string casting in even number of attempts.A string and the value of the guess was an integer. As we need integer comparison , this string casting was removed. The output string used in the tuples was also corrected. 
-  These chanegs were tested with newly generated test cases:  def test_winning_guess(),test_guess_too_high(),test_guess_too_low():  
+  The value of the secret was being cast as a string during even-numbered attempts. Since the guess value was an integer and we require an integer comparison, this string casting was removed. Additionally, the output strings within the tuples were corrected for consistency. These changes were verified using newly generated test cases: test_winning_guess(), test_guess_too_high(), and test_guess_too_low().
     
 - Did AI help you design or understand any tests? How?
-  I used AI to generate test cases. I had no prior knowledge using pytest. So,I use AI to learn about it and to run the test commands.
-  When I first execute the test files, It produce errors becasue the exsiting test cases was comparing tuples and string. AI help me understand these errors in the existng test code
+  I used AI to generate test cases, as I had no prior knowledge of pytest. I used AI to learn about the framework and how to run the test commands. When I first executed the test files, they produced errors because the existing test cases were comparing tuples to strings. AI helped me understand these errors within the existing test code
 
   Note: I also used AI to change minor functionality of the game, such as disabling the difficulty selection box after a win or loss until a new game starts.
 ---
