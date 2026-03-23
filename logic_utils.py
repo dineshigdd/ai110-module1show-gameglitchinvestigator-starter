@@ -27,6 +27,8 @@ def parse_guess(raw: str):
            return False, value, "No decimals allowed. The guess must be an integer."
         else:
             value = int(raw)
+            if value <= 0:
+                return False, None, "zero and negative numbers are not allowed.The guess must be a positive integer .."
     except Exception:
         return False, None, "That is not a number."
 

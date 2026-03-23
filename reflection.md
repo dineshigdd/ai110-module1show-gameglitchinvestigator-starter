@@ -17,14 +17,14 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
    - Hints does not help the user to get closer to secret number to win the game. Hints mislead the user
   - requirement: Hints are supposed to help the user to get closer the required target
 
-- bug: The "New Game" does not reset the window to paly a new game
+  - bug: The "New Game" does not reset the window to paly a new game
   - requirement: The "New Game" button should reset all the variables in the game. It should reset the state of the game.
 
   - bug: "Attempts allowed" The sidebar is one point higher than "Attempts left" in the main area.
   - requirement. The sidebar and main window should display the same number of attempts at all levels of diffukty
 
- - 
-
+ - bug: Number of attempts are not deacreaing at every attempt
+ - requirements: Number of attempts should be decreasing at every attempt
 ---
 
 ## 2. How did you use AI as a teammate?
@@ -67,19 +67,36 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - Did AI help you design or understand any tests? How?
   I used AI to generate test cases. I had no prior knowledge using pytest. So,I use AI to learn about it and to run the test commands.
   When I first execute the test files, It produce errors becasue the exsiting test cases was comparing tuples and string. AI help me understand these errors in the existng test code
+
+  Note: I also used AI to change minor functionality of the game, such as disabling the difficulty selection box after a win or loss until a new game starts.
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
 - In your own words, explain why the secret number kept changing in the original app.
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- What change did you make that finally gave the game a stable secret number?
+  I learned that Streamlit is a tool designed for those who want to share data science projects as web apps. It is, therefore, engineered for those who do not have knowledge of JS, HTML, and CSS, but want to quickly share their data science projects.
 
+  Streamlit maintains persistent data in session variables; it reruns the entire program whenever a user changes the state. However, the data stored in the session variables remains unaffected by these reruns. 
+
+- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+  You can manage these reruns using the st.rerun() and st.stop() functions.
+
+  st.rerun(): This is used to force an immediate restart of the script from the very top. It is useful when you change a session variable and want the UI to reflect that change instantly without waiting for the next user interaction.
+
+  st.stop(): This does not "manage" a rerun in the sense of starting over. Instead, it halts execution immediately. Anything written in your code after st.stop() will not be executed or displayed. This is useful for stopping the app if an error occurs or after a specific condition is met (like a "Game Over" screen where you don't want the rest of the page to load).
+
+- What change did you make that finally gave the game a stable secret number?
+  The secret remains stable until the user starts a new game. The randomly generated secret is stored in the session state and is reassigned to the secret variable during every rerun. This ensures that the secret stays consistent throughout the session. When a new game is started, a new secret is generated and stored in the session
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
+- What is one habit or strategy from this project that you want to reuse in future labs or projects? 
+- This could be a testing habit, a prompting strategy, or a way you used Git.
+  While I used AI in this project, the most critical lesson I learned is that as a developer or engineer, I must have a deep understanding of the codebase I am developing. If you rely totally on AI without understanding the logic or the code behind your application, it can be very challenging to debug and fix errors. In summary, you must be the master and use AI only as an assistant. 
+
 - What is one thing you would do differently next time you work with AI on a coding task?
+  While I believe I used AI reasonably well in this project, next time I will make sure to provide better documentation for debugging and increase the number of test cases. When it comes to version control, I should have made more frequent commits.
+
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+  AI-generated code is fairly useful; however, it is not without flaws. Your prompt is critical, and you often need more than one prompt to refine the AI-generated code. This is where your understanding of the codebase is essential.
