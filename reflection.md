@@ -47,22 +47,21 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
   How I verified:  You can easily verify this. When the user change the level of difficuly , the main window does not show the correct range of numbers for the user to enter.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
   There is this AI suggesstion"Bug: **Hard's range (1–50) is smaller than Normal's (1–100), yet Hard gets fewer attempts (5 vs 8).** That's actually harder. But the hint UI always says "Guess between 1 and 100" regardless of difficulty (line 110)."
-  While AI is correctly distinguish harder range and Nomral range. However, AI suggest that Harder range should have more attempts than nomral range. While I do not have access to specific user requirements of this app, I assume that having fewer range for the level 'Hard' than that for the 'Normal' range is by design by the development team.
-
+  While AI is correctly distinguish harder range and Nomral range, However, AI suggest that Harder range should have more attempts than normal range. While I do not have access to specific user requirements of this app, I assumed that having fewer range for the level 'Hard' than that of the 'Normal' range is by design by the development team.
 ---
 
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
-  First I,manually, checked the output of the functions that I debugged
+      First I,manually, checked the output of the functions that I debugged
   Then, I decided to generate test cases for the two bugs that I fixed
-  finally, I ran pytest to run these test cases with the command `python -m pytest tests/test_game_logic.py`
+  finally, I ran pytest to run these test cases with the command `python -m pytest tests/test_game_logic.py`.
   I found that the existing test cases had errors becasue they compare the output to string of the check_guess function to string. However, the return value of this function is a tuple
-  Thefore, I commented thees exsiting test cases and utilize AI generated ones.
+  Thefore, I commented these exsiting test cases and utilize AI generated ones.
   
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
-  Value of the secret was a sting and the value of the guess was an integer. As we need integer comparison , the value of the secret was converted to an integer. The output string used in the tuples was also corrected. 
+  Value of the secret had a string casting in even number of attempts.A string and the value of the guess was an integer. As we need integer comparison , this string casting was removed. The output string used in the tuples was also corrected. 
   These chanegs were tested with newly generated test cases:  def test_winning_guess(),test_guess_too_high(),test_guess_too_low():  
     
 - Did AI help you design or understand any tests? How?

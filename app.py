@@ -30,8 +30,9 @@ st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
+#FIX: Changed initial attempts to 0 to fix the off-by-one display bug in the UI.
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 1
+    st.session_state.attempts = 0 
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -42,10 +43,14 @@ if "status" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+if "hint" not in st.session_state:
+    st.session_state.hint = None
+
 st.subheader("Make a guess")
 
+#fixed the range display to match the actual range for the difficulty level
 st.info(
-    f"Guess a number between {low} and {high}. " #fixed the range display to match the actual range for the difficulty level
+    f"Guess a number between {low} and {high}. " 
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
@@ -72,8 +77,15 @@ with col3:
 if new_game:
     st.session_state.attempts = 0
     st.session_state.secret = random.randint(low, high)
+    st.session_state.status = "playing"
+    st.session_state.history.clear()
+    st.session_state.hint = None
+    st.session_state.score = 0 #FIX: Reset score to 0 when starting a new game to ensure scoring starts fresh.
     st.success("New game started.")
     st.rerun()
+
+if st.session_state.hint:
+    st.warning(st.session_state.hint)
 
 if st.session_state.status != "playing":
     if st.session_state.status == "won":
@@ -82,27 +94,27 @@ if st.session_state.status != "playing":
         st.error("Game over. Start a new game to try again.")
     st.stop()
 
-if submit:
-    st.session_state.attempts += 1
+if submit:    
 
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
-        st.session_state.history.append(raw_guess)
+        # st.session_state.history.append(raw_guess) 
         st.error(err)
     else:
         st.session_state.history.append(guess_int)
-
-        if st.session_state.attempts % 2 == 0:
-            #FIX: Added int() cast to secret to ensure type consistency for comparison in check_guess. 
-            secret = int(st.session_state.secret) 
-        else:
-            secret = st.session_state.secret    
-
+        st.session_state.attempts += 1
+        #FIX: remove the unnnecessary if-else logic
+        # if st.session_state.attempts % 2 == 0:
+        #     #FIX: remove string casting to secret to ensure type consistency for comparison in check_guess. 
+        #     secret = st.session_state.secret
+        # else:
+        #     secret = st.session_state.secret    
+        secret = st.session_state.secret    
         outcome, message = check_guess(guess_int, secret)
 
         if show_hint:
-            st.warning(message)
+            st.session_state.hint = message
 
         st.session_state.score = update_score(
             current_score=st.session_state.score,
@@ -115,16 +127,18 @@ if submit:
             st.session_state.status = "won"
             st.success(
                 f"You won! The secret was {st.session_state.secret}. "
-                f"Final score: {st.session_state.score}"
+                f"Final score: {abs(st.session_state.score)}"
             )
         else:
-            if st.session_state.attempts >= attempt_limit:
+            if st.session_state.attempts  > attempt_limit:#fixed the off-by-one error in the attempt limit check to ensure the game ends after the correct number of attempts, and updated the status to "lost" to reflect the game over state when the player runs out of attempts.
                 st.session_state.status = "lost"
                 st.error(
                     f"Out of attempts! "
                     f"The secret was {st.session_state.secret}. "
-                    f"Score: {st.session_state.score}"
+                    f"Score: {abs(st.session_state.score)}"
                 )
+            else:
+                st.rerun()#fIXME: Added rerun after processing a guess to immediately update the UI with the new attempt count, score, and feedback message without requiring an additional user action.
 
 st.divider()
 st.caption("Built by an AI that claims this code is production-ready.")
