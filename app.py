@@ -13,6 +13,7 @@ difficulty = st.sidebar.selectbox(
     "Difficulty",
     ["Easy", "Normal", "Hard"],
     index=1,
+    disabled=st.session_state.get("status", "playing") != "playing",
 )
 
 attempt_limit_map = {
@@ -32,7 +33,7 @@ if "secret" not in st.session_state:
 
 #FIX: Changed initial attempts to 0 to fix the off-by-one display bug in the UI.
 if "attempts" not in st.session_state:
-    st.session_state.attempts = 0 
+    st.session_state.attempts = 0
 
 if "score" not in st.session_state:
     st.session_state.score = 0
@@ -45,6 +46,7 @@ if "history" not in st.session_state:
 
 if "hint" not in st.session_state:
     st.session_state.hint = None
+
 
 st.subheader("Make a guess")
 
@@ -89,9 +91,16 @@ if st.session_state.hint:
 
 if st.session_state.status != "playing":
     if st.session_state.status == "won":
-        st.success("You already won. Start a new game to play again.")
+        st.success(
+            f"You won! The secret was {st.session_state.secret}. "
+            f"Final score: {abs(st.session_state.score)} — Start a new game to play again."
+        )
     else:
-        st.error("Game over. Start a new game to try again.")
+        st.error(
+            f"Out of attempts! "
+            f"The secret was {st.session_state.secret}. "
+            f"Score: {abs(st.session_state.score)}"
+        )
     st.stop()
 
 if submit:    
@@ -125,18 +134,12 @@ if submit:
         if outcome == "Win":
             st.balloons()
             st.session_state.status = "won"
-            st.success(
-                f"You won! The secret was {st.session_state.secret}. "
-                f"Final score: {abs(st.session_state.score)}"
-            )
+            st.session_state.hint = None
+            st.rerun()
         else:
-            if st.session_state.attempts  > attempt_limit:#fixed the off-by-one error in the attempt limit check to ensure the game ends after the correct number of attempts, and updated the status to "lost" to reflect the game over state when the player runs out of attempts.
+            if st.session_state.attempts >= attempt_limit:
                 st.session_state.status = "lost"
-                st.error(
-                    f"Out of attempts! "
-                    f"The secret was {st.session_state.secret}. "
-                    f"Score: {abs(st.session_state.score)}"
-                )
+                st.rerun()
             else:
                 st.rerun()#fIXME: Added rerun after processing a guess to immediately update the UI with the new attempt count, score, and feedback message without requiring an additional user action.
 

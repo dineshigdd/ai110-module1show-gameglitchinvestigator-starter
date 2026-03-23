@@ -23,7 +23,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
   - bug: "Attempts allowed" The sidebar is one point higher than "Attempts left" in the main area.
   - requirement. The sidebar and main window should display the same number of attempts at all levels of diffukty
 
- 
+ - 
 
 ---
 
@@ -31,6 +31,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
   Claude Code
+
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
   AI suggestion : Hint always says "1 to 100" regardless of difficulty
   This is what AI specifically stated about this bug 
@@ -41,7 +42,6 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
   )
   ```
   The string "1 and 100" is hardcoded. It never uses the low and high variables that were already computed just above it at app.py:87:
-
   low, high = get_range_for_difficulty(difficulty)
 
   How I verified:  You can easily verify this. When the user change the level of difficuly , the main window does not show the correct range of numbers for the user to enter.
